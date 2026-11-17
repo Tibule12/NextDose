@@ -223,3 +223,73 @@ header p{color:#60747d!important}
   .row-actions { align-items:stretch!important; }
   .row-actions button { margin-left:auto; }
 }
+
+
+/* iPhone WebKit date control: keep the native picker inside its form column.
+   Prevent its intrinsic width/height from overflowing the input card. */
+.dob-field {
+  display:block;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+}
+.dob-help {
+  color:#60747d;
+  font-size:.82rem;
+  line-height:1.45;
+  margin:7px 0 4px;
+}
+#start .error:empty {
+  display:none!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+@media(max-width:720px) {
+  #start {
+    display:block!important;
+    min-width:0!important;
+    max-width:100%!important;
+    width:100%!important;
+    overflow:visible;
+  }
+  #start .dob-field {
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:52px!important;
+    max-height:52px!important;
+    overflow:hidden!important;
+    border-radius:12px;
+    box-sizing:border-box!important;
+    position:relative;
+  }
+  #start input#dob {
+    -webkit-appearance:none!important;
+    appearance:none!important;
+    display:block!important;
+    box-sizing:border-box!important;
+    position:relative!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+    padding:0 14px!important;
+    margin:0!important;
+    line-height:normal!important;
+    font-size:16px!important;
+    border:1px solid #cbd7d6!important;
+    border-radius:12px!important;
+    color:#253e46!important;
+    background:#fff!important;
+  }
+  #start input#dob::-webkit-date-and-time-value {
+    min-height:1em;
+    text-align:left;
+  }
+  #start input#dob::-webkit-calendar-picker-indicator { opacity:.8; }
+  #start .dob-help { margin:8px 0 10px!important; }
+  #start button[type=submit] { margin-top:18px!important; }
+}

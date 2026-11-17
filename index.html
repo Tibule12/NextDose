@@ -137,7 +137,8 @@
           <label for="name">Child's name</label>
           <input id="name" name="name" type="text" value="${(saved.name || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}">
           <label for="dob">Date of birth</label>
-          <input id="dob" name="dob" type="date" max="${todayISO()}" value="${saved.dob || ''}">
+          <div class="dob-field"><input id="dob" name="dob" type="date" aria-describedby="dob-help" max="${todayISO()}" value="${saved.dob || ''}"></div>
+          <p class="dob-help" id="dob-help">Tap the field to choose a date.</p>
           <p class="error" role="alert">${message}</p>
           <button type="submit">Show schedule</button>
         </form>`;

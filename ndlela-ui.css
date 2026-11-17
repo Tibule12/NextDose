@@ -68,3 +68,158 @@ input[type=text],input[type=date],select{min-height:50px!important;border:1px so
 .brand h1{color:#141F2B!important;font-weight:800!important;letter-spacing:-.05em}
 .brand img{object-fit:contain;background:#fff}
 header p{color:#60747d!important}
+
+
+/* Mobile-first overrides: stop the desktop timeline and form controls
+   from crowding narrow screens. Keep desktop appearance untouched. */
+@media (max-width:720px) {
+  html { -webkit-text-size-adjust:100%; }
+  body { width:100%; min-width:0; overflow-x:clip; }
+  main {
+    width:100%!important;
+    max-width:100%!important;
+    padding:18px 16px max(48px, env(safe-area-inset-bottom))!important;
+  }
+  #app, #app > *, .card, .row, .next-card { min-width:0; max-width:100%; }
+  header {
+    display:flex!important;
+    flex-direction:column;
+    align-items:flex-start!important;
+    justify-content:flex-start;
+    gap:6px!important;
+    margin:0 0 24px!important;
+    padding:0 0 18px!important;
+  }
+  .brand { gap:10px!important; min-width:0; }
+  .brand img { width:44px!important; height:44px!important; flex:0 0 44px; }
+  .brand h1 { font-size:1.5rem!important; margin:0; line-height:1.2; }
+  header p {
+    display:block!important; text-align:left!important; margin:0!important;
+    font-size:.78rem; line-height:1.4; opacity:1;
+  }
+  .page-nav { margin:0 0 18px!important; }
+  .page-nav:empty { display:none!important; }
+  .back-button {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-height:44px!important; max-width:100%;
+    white-space:normal; text-align:left;
+  }
+  .back-button::after, #back::after { content:none!important; }
+  #app > h1 {
+    font-size:clamp(1.65rem,6vw,2.1rem)!important;
+    line-height:1.2; margin:0 0 12px!important;
+    overflow-wrap:anywhere;
+  }
+  #app > p { margin:0 0 18px!important; font-size:.91rem; }
+  .card { width:100%; padding:22px 18px!important; border-radius:18px!important; }
+  label { margin-top:16px; }
+  input[type=text], input[type=date], select {
+    display:block; box-sizing:border-box;
+    width:100%!important; min-width:0!important; max-width:100%!important;
+    height:52px; min-height:52px!important;
+    font-size:16px!important; line-height:1.3;
+    padding:12px 14px!important;
+  }
+  .booking-form .chip-select {
+    height:52px!important; min-height:52px!important;
+    width:100%!important; max-width:100%!important;
+    padding:12px 14px!important;
+    font-size:16px!important;
+  }
+  form.card button[type=submit] {
+    width:100%; min-height:52px; margin-top:8px;
+    font-size:.96rem;
+  }
+  .rows {
+    width:100%; display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important; position:static;
+  }
+  /* The older mockup added a vertical track and circular markers, which
+     collide with the bordered cards on mobile. */
+  .rows::before, .row::before {
+    display:none!important; content:none!important;
+  }
+  .row {
+    position:relative; width:100%;
+    display:flex!important; flex-direction:column!important;
+    align-items:stretch!important; justify-content:space-between;
+    padding:18px!important;
+    gap:14px!important; min-height:0!important;
+    grid-template-columns:none!important;
+    border-left-width:4px; border-radius:16px!important;
+  }
+  .row h2 { font-size:1.1rem!important; line-height:1.35; }
+  .vaccines {
+    font-size:.9rem!important; line-height:1.6;
+    overflow-wrap:anywhere; word-break:normal;
+  }
+  .status {
+    margin-top:12px!important; line-height:1.4;
+    padding:5px 10px!important;
+  }
+  .row > div:first-child > span:last-child {
+    display:block!important; margin:8px 0 0!important;
+    font-size:.81rem; line-height:1.5;
+  }
+  .row-actions {
+    width:100%; display:flex!important;
+    align-items:center!important; justify-content:space-between!important;
+    flex-wrap:wrap; column-gap:12px; row-gap:12px;
+    padding-top:14px!important;
+    font-size:.84rem; line-height:1.5;
+    overflow-wrap:anywhere;
+  }
+  .row-actions label {
+    display:inline-flex!important; align-items:center;
+    gap:9px!important; margin:0;
+    min-height:44px; cursor:pointer;
+  }
+  .row-actions input[type=checkbox] {
+    width:20px!important; height:20px!important;
+    flex:0 0 20px; margin:0;
+  }
+  .row-actions button { min-height:44px!important; padding:10px 19px!important; }
+  .list-heading {
+    display:flex!important; flex-direction:column!important;
+    align-items:flex-start!important; justify-content:flex-start;
+    gap:2px!important; margin:23px 0 13px!important;
+  }
+  .list-heading h2 { font-size:1.14rem!important; }
+  .list-heading span { font-size:.82rem; }
+  .next-card {
+    display:flex!important; flex-direction:column!important;
+    align-items:stretch!important; justify-content:flex-start!important;
+    gap:18px!important;
+    padding:20px!important; margin:19px 0 22px!important;
+    border-radius:18px!important;
+  }
+  .next-card > div { min-width:0; }
+  .next-headline { font-size:1.03rem!important; line-height:1.45; }
+  .next-card p { margin:5px 0 0!important; font-size:.93rem; }
+  .book-now {
+    display:flex!important; align-items:center; justify-content:center;
+    width:100%!important; max-width:100%!important; min-height:50px;
+    margin:0; padding:12px 16px!important; text-align:center;
+    white-space:normal!important; font-size:.93rem;
+  }
+  #edit { width:100%; min-height:48px; }
+  .booking-form { margin-top:16px; }
+  .booking-form label { margin:16px 0 7px; }
+  .demo-note { font-size:.82rem; line-height:1.55; }
+  .confirmation {
+    width:100%; padding:28px 18px!important;
+    overflow-wrap:anywhere;
+  }
+  .confirmation h1 { font-size:1.55rem!important; }
+  .confirmation p { overflow-wrap:anywhere; }
+  .confirmation #back { width:100%; min-height:50px; margin-top:12px; }
+}
+@media(max-width:370px) {
+  main { padding-left:12px!important; padding-right:12px!important; }
+  .card, .row, .next-card { padding:16px!important; }
+  .brand h1 { font-size:1.35rem!important; }
+  #app > h1 { font-size:1.6rem!important; }
+  .row-actions { align-items:stretch!important; }
+  .row-actions button { margin-left:auto; }
+}

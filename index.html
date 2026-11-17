@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NextDose</title>
+  <style>
+    :root { font: 16px/1.5 system-ui, sans-serif; color: #172033; background: #f3f6fa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 2rem 16px; }
+    main { max-width: 420px; margin: auto; }
+    h1 { margin-top: 0; }
+    header p { margin: -.75rem 0 1.5rem; color: #475467; }
+    .card, .row { background: white; border: 1px solid #dce3ec; border-radius: 12px; padding: 1rem; }
+    .card { max-width: 440px; }
+    label { display: block; margin: 1rem 0 .35rem; font-weight: 600; }
+    input[type="text"], input[type="date"], select { width: 100%; padding: .7rem; border: 1px solid #9aa8bb; border-radius: 6px; font: inherit; }
+    button { min-height: 44px; border: 0; border-radius: 6px; padding: .65rem 1rem; background: #155eef; color: white; font: inherit; cursor: pointer; }
+    .error { min-height: 1.5em; color: #b42318; }
+    .rows { display: grid; gap: .75rem; }
+    .row { display: grid; grid-template-columns: 1fr auto; gap: .5rem 1rem; align-items: center; }
+    .row h2 { margin: 0; font-size: 1.1rem; }
+    .vaccines { margin: .25rem 0 0; color: #475467; }
+    .status { display: inline-block; margin-top: .5rem; border-radius: 99px; padding: .1rem .6rem; background: #eef2f6; font-size: .85rem; text-transform: capitalize; }
+    .status.done { background: #dcfae6; color: #067647; }
+    .status.overdue { background: #fee4e2; color: #b42318; }
+    .status.due { background: #fef0c7; color: #93370d; }
+    .status.upcoming { background: #eef2f6; color: #475467; }
+    .row-actions { display: flex; align-items: center; gap: .75rem; }
+    .row-actions label { display: flex; align-items: center; gap: .35rem; margin: 0; white-space: nowrap; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header><h1>NextDose</h1><p>Your child's road to health, booked.</p></header>
+    <section id="app"></section>
+  </main>
+  <script>
+    // Source: NDoH PHC STG Chapter 13 Immunisation, 13.2, p13.3 (v1.1, 6 Dec 2024)
+    const SCHEDULE = [
+      { label: 'Birth',     weeks: 0,    vaccines: ['OPV0', 'BCG'] },
+      { label: '6 weeks',   weeks: 6,    vaccines: ['OPV1', 'RV1', 'Hexavalent (DTaP-IPV-HB-Hib) 1', 'PCV1'] },
+      { label: '10 weeks',  weeks: 10,   vaccines: ['Hexavalent (DTaP-IPV-HB-Hib) 2'] },
+      { label: '14 weeks',  weeks: 14,   vaccines: ['RV2', 'Hexavalent (DTaP-IPV-HB-Hib) 3', 'PCV2'] },
+      { label: '6 months',  months: 6,   vaccines: ['Measles/Rubella 1'] },
+      { label: '9 months',  months: 9,   vaccines: ['PCV3'] },
+      { label: '12 months', months: 12,  vaccines: ['Measles/Rubella 2'] },
+      { label: '18 months', months: 18,  vaccines: ['Hexavalent (DTaP-IPV-HB-Hib) 4'] },
+      { label: '6 years',   months: 72,  vaccines: ['Tdap'] },
+      { label: '12 years',  months: 144, vaccines: ['Tdap'] },
+    ];
+
+    // Demo data only: fictional clinics in real Cape Town areas. No real clinic is bookable.
+    const CLINICS = [
+      { name: 'Khayelitsha Demo Clinic', area: 'Khayelitsha' },
+      { name: 'Mitchells Plain Demo Clinic', area: 'Mitchells Plain' },
+      { name: 'Gugulethu Demo Clinic', area: 'Gugulethu' },
+      { name: 'Bellville Demo Clinic', area: 'Bellville' },
+    ];
+    const TIMES = ['08:00', '09:30', '11:00', '13:30'];
+    const KEY = 'immunisationSchedule';
+    const app = document.querySelector('#app');
+    let saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    const todayISO = () => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+    const parseDate = value => {
+      const [year, month, day] = value.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    };
+    const addMonths = (date, months) => {
+      const result = new Date(date);
+      const day = result.getDate();
+      result.setDate(1);
+      result.setMonth(result.getMonth() + months);
+      result.setDate(Math.min(day, new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate()));
+      return result;
+    };
+    const formatDate = date => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const persist = () => localStorage.setItem(KEY, JSON.stringify(saved));
+
+    function showStart(message = '') {
+      app.innerHTML = `<h1>Immunisation schedule</h1>
+        <form class="card" id="start">
+          <label for="name">Child's name</label>
+          <input id="name" name="name" type="text" value="${(saved.name || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}">
+          <label for="dob">Date of birth</label>
+          <input id="dob" name="dob" type="date" max="${todayISO()}" value="${saved.dob || ''}">
+          <p class="error" role="alert">${message}</p>
+          <button type="submit">Show schedule</button>
+        </form>`;
+      app.querySelector('#start').addEventListener('submit', event => {
+        event.preventDefault();
+        const name = app.querySelector('#name').value.trim();
+        const dob = app.querySelector('#dob').value;
+        if (!dob || dob > todayISO()) return showStart(!dob ? 'Please enter a date of birth.' : 'Date of birth cannot be in the future.');
+        saved = { ...saved, name, dob, done: saved.done || [] };
+        persist();
+        showSchedule();
+      });
+    }
+
+    function showSchedule() {
+      const birth = parseDate(saved.dob);
+      const today = parseDate(todayISO());
+      const entries = SCHEDULE.map((item, index) => {
+        const due = new Date(birth);
+        if (item.weeks !== undefined) due.setDate(due.getDate() + item.weeks * 7);
+        else due.setTime(addMonths(birth, item.months).getTime());
+        const days = Math.round((due - today) / 86400000);
+        const done = Boolean(saved.done && saved.done[index]);
+        const booking = saved.bookings && saved.bookings[item.label];
+        const status = done ? 'done' : days < 0 ? 'overdue' : days <= 14 ? 'due' : 'upcoming';
+        return { item, index, due, status, done, booking };
+      });
+      const bookIndex = entries.filter(row => !row.done && !row.booking && (row.status === 'overdue' || row.status === 'due'))
+        .sort((a, b) => a.due - b.due)[0]?.index;
+      app.innerHTML = `<h1>${saved.name ? `${saved.name}'s schedule` : 'Immunisation schedule'}</h1>
+        <p>Date of birth: ${formatDate(birth)}</p>
+        <div class="rows">${entries.map(({ item, index, due, status, done, booking }) => `
+          <article class="row">
+            <div><h2>${item.label}</h2><p class="vaccines">${item.vaccines.join(', ')}</p>
+              <span class="status ${status}">${status}</span> <span>Due ${formatDate(due)}</span></div>
+            <div class="row-actions"><label><input type="checkbox" data-index="${index}" ${done ? 'checked' : ''}> Done</label>
+              ${booking ? `Booked: ${formatDate(parseDate(booking.date))}, ${booking.time}` : index === bookIndex ? `<button type="button" data-book="${index}">Book</button>` : ''}</div>
+          </article>`).join('')}</div>
+        <p><button id="edit" type="button">Edit details</button></p>`;
+      app.querySelectorAll('[data-index]').forEach(box => box.addEventListener('change', () => {
+        saved.done = saved.done || [];
+        saved.done[box.dataset.index] = box.checked;
+        persist();
+        showSchedule();
+      }));
+      app.querySelectorAll('[data-book]').forEach(button => button.addEventListener('click', () => showBooking(Number(button.dataset.book))));
+      app.querySelector('#edit').addEventListener('click', () => showStart());
+    }
+
+    function showBooking(index) {
+      const visit = SCHEDULE[index];
+      const weekdays = [];
+      const date = new Date();
+      while (weekdays.length < 5) {
+        date.setDate(date.getDate() + 1);
+        if (date.getDay() !== 0 && date.getDay() !== 6) weekdays.push(new Date(date));
+      }
+      app.innerHTML = `<h1>Book ${visit.label}</h1>
+        <p>${visit.vaccines.join(', ')}</p>
+        <form class="card" id="booking">
+          <label for="clinic">Demo clinics</label>
+          <select id="clinic" required><option value="">Choose a clinic</option>${CLINICS.map(clinic => `<option value="${clinic.name}">${clinic.name} (${clinic.area})</option>`).join('')}</select>
+          <label for="date">Date</label>
+          <select id="date" required><option value="">Choose a weekday</option>${weekdays.map(day => `<option value="${todayISOFor(day)}">${formatDate(day)}</option>`).join('')}</select>
+          <label for="time">Time</label>
+          <select id="time" required><option value="">Choose a time</option>${TIMES.map(time => `<option>${time}</option>`).join('')}</select>
+          <p class="error" role="alert"></p>
+          <button type="submit">Confirm</button>
+        </form>`;
+      app.querySelector('#booking').addEventListener('submit', event => {
+        event.preventDefault();
+        const booking = {
+          ref: `NDL-${Math.floor(1000 + Math.random() * 9000)}`,
+          clinic: app.querySelector('#clinic').value,
+          date: app.querySelector('#date').value,
+          time: app.querySelector('#time').value,
+          label: visit.label,
+        };
+        saved.bookings = saved.bookings || {};
+        saved.bookings[visit.label] = booking;
+        persist();
+        showConfirmation(booking);
+      });
+    }
+
+    const todayISOFor = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+    function showConfirmation(booking) {
+      const visit = SCHEDULE.find(item => item.label === booking.label);
+      app.innerHTML = `<h1>Booking confirmed</h1>
+        <section class="card"><p><strong>${saved.name || 'Child'}</strong></p>
+          <p>${visit.vaccines.join(', ')}</p><p>${booking.clinic}</p>
+          <p>${formatDate(parseDate(booking.date))} at ${booking.time}</p>
+          <p>Reference: <strong>${booking.ref}</strong></p>
+          <button id="back" type="button">Back to schedule</button>
+        </section>`;
+      app.querySelector('#back').addEventListener('click', showSchedule);
+    }
+
+    if (saved.dob && saved.dob <= todayISO()) showSchedule();
+    else showStart();
+  </script>
+</body>
+</html>

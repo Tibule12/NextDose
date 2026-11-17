@@ -1,0 +1,64 @@
+
+:root{--teal:#054452;--orange:#f49c22;--bg:#f8f7f4;--muted:#667981}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{padding:0!important;margin:0!important;background:var(--bg)!important}
+main{max-width:1120px!important;margin:0 auto!important;padding:30px 26px 72px!important}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 0 25px;margin-bottom:38px;border-bottom:1px solid #e2e8e5}
+header p{margin:0!important;color:var(--muted);text-align:right}
+.brand img{width:47px!important;height:47px!important}
+.brand h1{font-size:1.6rem!important}
+h1,h2{letter-spacing:-.035em}
+#app>h1{font-size:clamp(1.85rem,3.3vw,2.7rem);line-height:1.2;margin:10px 0 10px}
+#app>p{color:var(--muted);margin:0 0 26px}
+.row,.next-card,.card{border:1px solid #e6ebe8;box-shadow:0 8px 28px rgba(6,58,67,.045)!important;border-radius:20px!important}
+.card{padding:clamp(20px,4vw,38px)!important;max-width:660px!important}
+.rows{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px!important}
+.row{padding:22px!important;display:flex!important;flex-direction:column;justify-content:space-between;align-items:stretch!important;gap:20px!important;border-left:4px solid #cadcda;min-height:178px}
+.row:has(.status.due){border-left-color:#eea32e}
+.row:has(.status.overdue){border-left-color:#d45f57}
+.row:has(.status.done){border-left-color:#53a87b}
+.row h2{font-size:1.13rem!important;margin:0 0 6px!important}
+.vaccines{font-size:.91rem;line-height:1.5;color:#49606a!important}
+.status{padding:5px 11px!important;font-size:.79rem!important}
+.row>div:first-child>span:last-child{display:inline-block;margin-left:8px;font-size:.85rem;color:var(--muted)}
+.row-actions{display:flex!important;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #edf0ee;padding-top:13px}
+.row-actions label{font-size:.9rem!important;color:var(--teal)}
+input[type=checkbox]{height:18px;width:18px;accent-color:var(--teal);cursor:pointer}
+.next-card{background:#054452!important;color:white;padding:26px!important;margin:24px 0 28px!important}
+.next-headline,.next-card p{color:#fff!important}
+.next-card p{opacity:.9}
+.next-headline.overdue{color:#ffcd9b!important}
+.book-now{background:#fff;color:#054452!important;border-radius:12px;padding:12px 22px;text-decoration:none}
+.book-now:hover{background:#fff2dd}
+button{border-radius:12px!important;min-height:46px;transition:background .15s}
+button:hover{filter:brightness(.94)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #efad3d;outline-offset:2px}
+.row-actions button{padding:10px 20px}
+.page-nav{display:flex;justify-content:flex-start;margin:0 0 22px}
+.back-button{background:#e8efed!important;color:#054452!important;padding:10px 17px!important;font-size:.86rem}
+.back-button:hover{background:#dbe7e4!important}
+.list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:28px 0 16px}
+.list-heading h2{margin:0;font-size:1.25rem}
+.list-heading span{color:var(--muted);font-size:.84rem}
+input[type=text],input[type=date],select{min-height:50px!important;border:1px solid #cbd7d6!important;border-radius:12px!important;padding:12px 14px!important;background:white!important;color:#253e46!important}
+.booking-form .chip-select{display:block!important;width:100%!important;height:50px!important;padding:12px 14px!important;overflow:visible!important;border:1px solid #cbd7d6!important;background:white!important}
+.booking-form .chip-select option{display:block!important;padding:4px!important;border-radius:0!important;background:white!important;color:#253e46!important}
+.booking-form{margin-top:18px}
+.booking-form label{margin-top:18px}
+.demo-note{padding:12px 16px;border-radius:12px;background:#fff1d8;color:#875a18;font-size:.87rem;margin:16px 0}
+.confirmation{margin:0 auto}
+.confirmation h1{font-size:1.75rem}
+#edit{background:#e6eeec!important;color:var(--teal)!important}
+@media(max-width:720px){
+  main{padding:18px 16px 60px!important}
+  header{margin-bottom:24px;padding-bottom:18px}
+  header p{display:none}
+  .brand h1{font-size:1.4rem!important}
+  .rows{grid-template-columns:1fr!important;gap:12px!important}
+  .row{min-height:0;padding:18px!important}
+  .next-card{padding:20px!important;gap:12px}
+  .book-now{padding:10px 14px}
+  .list-heading{align-items:flex-start}
+}
+@media(max-width:390px){.next-card{flex-direction:column;align-items:flex-start!important}.book-now{width:100%;text-align:center}}

@@ -141,6 +141,7 @@
           <p class="error" role="alert">${message}</p>
           <button type="submit">Show schedule</button>
         </form>`;
+      window.scrollTo(0, 0);
       app.querySelector('#back-to-list')?.addEventListener('click', showSchedule);
       app.querySelector('#start').addEventListener('submit', event => {
         event.preventDefault();
@@ -153,7 +154,7 @@
       });
     }
 
-    function showSchedule() {
+    function showSchedule(scrollToTop = true) {
       const birth = parseDate(saved.dob);
       const today = parseDate(todayISO());
       const entries = SCHEDULE.map((item, index) => {
@@ -183,14 +184,15 @@
               ${booking ? `Booked: ${formatDate(parseDate(booking.date))}, ${booking.time}` : index === bookIndex ? `<button type="button" data-book="${index}">Book</button>` : ''}</div>
           </article>`).join('')}</div>
         <p><button id="edit" type="button">Edit details</button></p>`;
+      if (scrollToTop) window.scrollTo(0, 0);
       app.querySelector('#back-to-details').addEventListener('click', () => showStart());
       app.querySelectorAll('[data-index]').forEach(box => box.addEventListener('change', () => {
         saved.done = saved.done || [];
         saved.done[box.dataset.index] = box.checked;
         persist();
-        showSchedule();
+        showSchedule(false);
       }));
-      app.querySelectorAll('[data-book]').forEach(button => button.addEventListener('click', () => showBooking(Number(button.dataset.book))));
+      app.querySelectorAll('[data-book]').forEach(button => button.addEventListener('click', event => { event.preventDefault(); showBooking(Number(button.dataset.book)); }));
       app.querySelector('#edit').addEventListener('click', () => showStart());
     }
 
@@ -214,6 +216,7 @@
           <p class="demo-note">Demo only — no real clinic appointment is reserved.</p><p class="error" role="alert"></p>
           <button type="submit">Save demo booking</button>
         </form>`;
+      window.scrollTo(0, 0);
       app.querySelector('#back-to-schedule').addEventListener('click', showSchedule);
       app.querySelector('#booking').addEventListener('submit', event => {
         event.preventDefault();
@@ -243,6 +246,7 @@
           <p>Reference: <strong>${booking.ref}</strong></p>
           <button id="back" type="button">Back to schedule</button>
         </section>`;
+      window.scrollTo(0, 0);
       app.querySelector('#back').addEventListener('click', showSchedule);
     }
 

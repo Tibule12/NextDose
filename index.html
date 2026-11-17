@@ -6,74 +6,83 @@
   <title>NextDose</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --teal: #054452;
-      --orange: #F49C22;
-      --cream: #FCEFDE;
-      --bg: #FBF6EE;
-      --text: #2F2F2E;
-      --green: #3CA052;
-      --amber: #F0AA21;
-      --red: #CC3F34;
-      --grey: #939598;
-      font: 16px/1.5 'Poppins', system-ui, sans-serif;
+      --teal: #0B6E79;
+      --mint: #7FD1C7;
+      --navy: #141F2B;
+      --bg: #F5F9F9;
+      --white: #FFFFFF;
+      --green: #2E9E6B;
+      --amber: #E9A23B;
+      --red: #D64545;
+      --grey: #9AA5AE;
+      font: 16px/1.5 'Inter', system-ui, sans-serif;
       font-weight: 400;
-      color: var(--text);
+      color: var(--navy);
       background: var(--bg);
     }
     * { box-sizing: border-box; }
     body { margin: 0; padding: 2rem 16px; }
     main { max-width: 420px; margin: auto; }
-    h1, h2, strong { font-weight: 600; }
-    h1, h2 { color: var(--teal); }
+    h1, h2, strong { font-weight: 800; }
+    h1, h2 { color: var(--navy); }
     h1 { margin-top: 0; }
-    header p { margin: .25rem 0 1.5rem; }
-    header p span { color: var(--orange); font-weight: 600; }
+    header p { margin: .25rem 0 1.5rem; color: var(--navy); opacity: .7; }
     .brand { display: flex; align-items: center; gap: .65rem; }
     .brand img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
-    .brand h1 { margin: 0; color: var(--teal); font-size: 1.75rem; }
-    .card, .row, .next-card { background: white; border-radius: 20px; padding: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .brand h1 { margin: 0; color: var(--navy); font-size: 1.75rem; font-weight: 800; letter-spacing: -.06em; }
+    .brand-dose { color: var(--teal); }
+    .card, .row, .next-card { background: var(--white); border-radius: 16px; padding: 14px; box-shadow: 0 4px 14px rgba(20,31,43,.06); }
     .card { max-width: 100%; }
-    label { display: block; margin: 1rem 0 .35rem; font-weight: 600; }
-    input[type="text"], input[type="date"], select { width: 100%; min-height: 48px; padding: .7rem; border: 1px solid #d8d1c7; border-radius: 12px; background: white; color: var(--text); font: inherit; }
-    button { min-height: 48px; border: 0; border-radius: 999px; padding: .7rem 1.2rem; background: var(--teal); color: white; font: inherit; font-weight: 600; cursor: pointer; }
+    label { display: block; margin: 1rem 0 .35rem; }
+    input[type="text"], input[type="date"], select { width: 100%; min-height: 48px; padding: .7rem; border: 1px solid var(--grey); border-radius: 12px; background: var(--white); color: var(--navy); font: inherit; }
+    button { min-height: 48px; border: 0; border-radius: 999px; padding: .7rem 1.2rem; background: var(--teal); color: white; font: inherit; cursor: pointer; }
     button::after { content: " ›"; font-size: 1.2em; }
     .error { min-height: 1.5em; color: var(--red); }
     .rows { display: grid; gap: 10px; }
-    .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .rows { position: relative; }
+    .rows::before { content: ""; position: absolute; z-index: 0; left: 18px; top: 24px; bottom: 24px; width: 2px; background: var(--grey); }
+    .row { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding-left: 46px; }
+    .row::before { content: ""; position: absolute; z-index: 1; left: 8px; top: 50%; width: 22px; height: 22px; transform: translateY(-50%); border: 3px solid var(--grey); border-radius: 50%; background: var(--white); }
+    .row:has(.status.done)::before { content: "✓"; display: grid; place-items: center; border: 0; background: var(--teal); color: var(--white); font-size: 14px; font-weight: 800; }
+    .row:has([data-book])::before { border: 0; background: var(--mint); }
     .row h2 { margin: 0; font-size: 1.1rem; }
-    .vaccines { margin: .25rem 0 0; color: var(--text); }
-    .status { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; border-radius: 999px; padding: .2rem .65rem; font-size: .82rem; font-weight: 600; }
-    .status.done { background: #e7f3e8; color: var(--green); }
-    .status.overdue { background: #f9e5e3; color: var(--red); }
-    .status.due { background: #fff1d2; color: var(--amber); }
-    .status.upcoming { background: #ededee; color: var(--grey); }
+    .vaccines { margin: .25rem 0 0; color: var(--navy); }
+    .status { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; border-radius: 999px; padding: .2rem .65rem; font-size: .82rem; }
+    .status.done { background: #e5f4ed; color: var(--green); }
+    .status.overdue { background: #fae7e7; color: var(--red); }
+    .status.due { background: #fbf0df; color: var(--amber); }
+    .status.upcoming { background: #edf0f2; color: var(--grey); }
     .row-actions { display: flex; align-items: center; gap: .75rem; }
     .row-actions label { display: flex; align-items: center; gap: .35rem; margin: 0; white-space: nowrap; }
-    .row-actions button { background: var(--orange); color: white; }
+    .row-actions button { background: var(--teal); color: white; }
     .next-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .next-card-copy { display: flex; align-items: center; gap: 10px; }
     .next-card p { margin: .2rem 0 0; }
-    .next-headline { color: var(--teal); font-weight: 600; }
+    .next-dot { flex: 0 0 16px; width: 16px; height: 16px; border-radius: 50%; background: var(--mint); }
+    .next-headline { color: var(--navy); font-weight: 800; }
     .next-headline.overdue { color: var(--red); }
-    .book-now { display: inline-flex; align-items: center; min-height: 44px; color: var(--teal); font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .book-now { display: inline-flex; align-items: center; min-height: 44px; color: var(--teal); font-weight: 800; text-decoration: none; white-space: nowrap; }
     .booking-form select { margin-bottom: .3rem; }
     .booking-form .chip-select { height: auto; padding: 0; border: 0; background: transparent; overflow: visible; }
-    .booking-form option { display: block; margin: 4px 0; padding: 8px 14px; border-radius: 999px; background: var(--cream); color: var(--text); }
+    .booking-form option { display: block; margin: 4px 0; padding: 8px 14px; border: 1px solid var(--teal); border-radius: 999px; background: var(--white); color: var(--navy); }
     .booking-form .chip-select option:checked { background: var(--teal); color: white; }
     .confirmation { text-align: center; }
     .confirmation-mark { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 1rem; border-radius: 50%; background: var(--teal); color: white; font-size: 2.5rem; }
     .confirmation h1 { margin-bottom: 1rem; }
     @media (max-width: 520px) { .row { grid-template-columns: 1fr; } .next-card { align-items: flex-start; } }
   </style>
+  <link rel="icon" type="image/png" href="logo.png?v=1b907797">
+  <link rel="apple-touch-icon" href="logo.png?v=1b907797">
   <link rel="stylesheet" href="ndlela-ui.css">
 </head>
 <body>
   <main>
     <header>
-      <div class="brand"><img src="logo.png" alt="NextDose logo"><h1>NextDose</h1></div>
-      <p>Your child's road to health, <span>booked.</span></p>
+      <div class="brand"><img src="logo.png?v=1b907797" alt="NextDose logo"><h1><span>Next</span><span class="brand-dose">Dose</span></h1></div>
+      <p>Your child's road to health, booked.</p>
     </header>
     <section id="app"></section>
   </main>

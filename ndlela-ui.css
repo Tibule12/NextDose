@@ -1,5 +1,5 @@
 
-:root{--teal:#054452;--orange:#f49c22;--bg:#f8f7f4;--muted:#667981}
+:root{--teal:#0B6E79;--orange:#0B6E79;--bg:#F5F9F9;--muted:#60747d}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{padding:0!important;margin:0!important;background:var(--bg)!important}
@@ -15,7 +15,7 @@ h1,h2{letter-spacing:-.035em}
 .card{padding:clamp(20px,4vw,38px)!important;max-width:660px!important}
 .rows{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px!important}
 .row{padding:22px!important;display:flex!important;flex-direction:column;justify-content:space-between;align-items:stretch!important;gap:20px!important;border-left:4px solid #cadcda;min-height:178px}
-.row:has(.status.due){border-left-color:#eea32e}
+.row:has(.status.due){border-left-color:#e9a23b}
 .row:has(.status.overdue){border-left-color:#d45f57}
 .row:has(.status.done){border-left-color:#53a87b}
 .row h2{font-size:1.13rem!important;margin:0 0 6px!important}
@@ -25,18 +25,18 @@ h1,h2{letter-spacing:-.035em}
 .row-actions{display:flex!important;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #edf0ee;padding-top:13px}
 .row-actions label{font-size:.9rem!important;color:var(--teal)}
 input[type=checkbox]{height:18px;width:18px;accent-color:var(--teal);cursor:pointer}
-.next-card{background:#054452!important;color:white;padding:26px!important;margin:24px 0 28px!important}
+.next-card{background:#0B6E79!important;color:white;padding:26px!important;margin:24px 0 28px!important}
 .next-headline,.next-card p{color:#fff!important}
 .next-card p{opacity:.9}
 .next-headline.overdue{color:#ffcd9b!important}
-.book-now{background:#fff;color:#054452!important;border-radius:12px;padding:12px 22px;text-decoration:none}
+.book-now{background:#fff;color:#0B6E79!important;border-radius:12px;padding:12px 22px;text-decoration:none}
 .book-now:hover{background:#fff2dd}
 button{border-radius:12px!important;min-height:46px;transition:background .15s}
 button:hover{filter:brightness(.94)}
 button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #efad3d;outline-offset:2px}
 .row-actions button{padding:10px 20px}
 .page-nav{display:flex;justify-content:flex-start;margin:0 0 22px}
-.back-button{background:#e8efed!important;color:#054452!important;padding:10px 17px!important;font-size:.86rem}
+.back-button{background:#e8efed!important;color:#0B6E79!important;padding:10px 17px!important;font-size:.86rem}
 .back-button:hover{background:#dbe7e4!important}
 .list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:28px 0 16px}
 .list-heading h2{margin:0;font-size:1.25rem}
@@ -62,3 +62,9 @@ input[type=text],input[type=date],select{min-height:50px!important;border:1px so
   .list-heading{align-items:flex-start}
 }
 @media(max-width:390px){.next-card{flex-direction:column;align-items:flex-start!important}.book-now{width:100%;text-align:center}}
+
+/* Brand refresh: keep the new NextDose wordmark and navigation legible. */
+.brand-dose{color:#0B6E79!important}
+.brand h1{color:#141F2B!important;font-weight:800!important;letter-spacing:-.05em}
+.brand img{object-fit:contain;background:#fff}
+header p{color:#60747d!important}

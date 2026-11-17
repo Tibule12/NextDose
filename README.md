@@ -4,6 +4,8 @@
 
 NextDose knows which vaccine your baby needs next and books the clinic visit for it.
 
+The interface uses Inter with a teal, mint and navy palette, a schedule progress track, a next-dose card and selectable day and time chips. See the [design mockup](design-mockup.html).
+
 ## The African problem
 
 Second measles dose coverage in South Africa was 76.2% in 2024/25 against a 95% target, down from 85.7% in 2016/17 (District Health Barometer, reported by Spotlight). Public clinic visits can take hours (about 3 hours measured at one Cape Town facility); some people pay up to R80 for someone to hold their place (GroundUp). For domestic workers, shift workers and spaza owners that is a day's income. The paper Road to Health booklet is easy to lose. Cape Town already has clinic booking; nothing starts from the child's due dose and books that visit.

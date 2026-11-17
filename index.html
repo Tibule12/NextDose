@@ -59,9 +59,8 @@
     .next-headline.overdue { color: var(--red); }
     .book-now { display: inline-flex; align-items: center; min-height: 44px; color: var(--teal); font-weight: 600; text-decoration: none; white-space: nowrap; }
     .booking-form select { margin-bottom: .3rem; }
-    .booking-form .chip-select { width: auto; min-width: 8rem; border: 0; border-radius: 999px; background: var(--cream); color: var(--text); }
-    .booking-form .chip-select:valid { background: var(--teal); color: white; }
-    .booking-form option { background: white; color: var(--text); }
+    .booking-form .chip-select { height: auto; padding: 0; border: 0; background: transparent; overflow: visible; }
+    .booking-form option { display: block; margin: 4px 0; padding: 8px 14px; border-radius: 999px; background: var(--cream); color: var(--text); }
     .booking-form .chip-select option:checked { background: var(--teal); color: white; }
     .confirmation { text-align: center; }
     .confirmation-mark { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 1rem; border-radius: 50%; background: var(--teal); color: white; font-size: 2.5rem; }
@@ -197,9 +196,9 @@
           <label for="clinic">Demo clinics</label>
           <select id="clinic" required><option value="">Choose a clinic</option>${CLINICS.map(clinic => `<option value="${clinic.name}">${clinic.name} (${clinic.area})</option>`).join('')}</select>
           <label for="date">Date</label>
-          <select id="date" class="chip-select" required><option value="">Choose a weekday</option>${weekdays.map(day => `<option value="${todayISOFor(day)}">${formatDate(day)}</option>`).join('')}</select>
+          <select id="date" class="chip-select" size="6" required><option value="">Choose a weekday</option>${weekdays.map(day => `<option value="${todayISOFor(day)}">${formatDate(day)}</option>`).join('')}</select>
           <label for="time">Time</label>
-          <select id="time" class="chip-select" required><option value="">Choose a time</option>${TIMES.map(time => `<option>${time}</option>`).join('')}</select>
+          <select id="time" class="chip-select" size="5" required><option value="">Choose a time</option>${TIMES.map(time => `<option>${time}</option>`).join('')}</select>
           <p class="error" role="alert"></p>
           <button type="submit">Confirm</button>
         </form>`;

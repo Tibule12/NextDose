@@ -72,7 +72,7 @@
 <body>
   <main>
     <header>
-      <div class="brand"><img src="logo.png" alt="Ndlela road-and-heart logo"><h1>Ndlela</h1></div>
+      <div class="brand"><img src="logo.png" alt="NextDose logo"><h1>NextDose</h1></div>
       <p>Your child's road to health, <span>booked.</span></p>
     </header>
     <section id="app"></section>
@@ -209,7 +209,7 @@
       app.querySelector('#booking').addEventListener('submit', event => {
         event.preventDefault();
         const booking = {
-          ref: `NDL-${Math.floor(1000 + Math.random() * 9000)}`,
+          ref: `NXT-${Math.floor(1000 + Math.random() * 9000)}`,
           clinic: app.querySelector('#clinic').value,
           date: app.querySelector('#date').value,
           time: app.querySelector('#time').value,

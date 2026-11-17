@@ -4,36 +4,77 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NextDose</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root { font: 16px/1.5 system-ui, sans-serif; color: #172033; background: #f3f6fa; }
+    :root {
+      --teal: #054452;
+      --orange: #F49C22;
+      --cream: #FCEFDE;
+      --bg: #FBF6EE;
+      --text: #2F2F2E;
+      --green: #3CA052;
+      --amber: #F0AA21;
+      --red: #CC3F34;
+      --grey: #939598;
+      font: 16px/1.5 'Poppins', system-ui, sans-serif;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--bg);
+    }
     * { box-sizing: border-box; }
     body { margin: 0; padding: 2rem 16px; }
     main { max-width: 420px; margin: auto; }
+    h1, h2, strong { font-weight: 600; }
+    h1, h2 { color: var(--teal); }
     h1 { margin-top: 0; }
-    header p { margin: -.75rem 0 1.5rem; color: #475467; }
-    .card, .row { background: white; border: 1px solid #dce3ec; border-radius: 12px; padding: 1rem; }
-    .card { max-width: 440px; }
+    header p { margin: .25rem 0 1.5rem; }
+    header p span { color: var(--orange); font-weight: 600; }
+    .brand { display: flex; align-items: center; gap: .65rem; }
+    .brand img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+    .brand h1 { margin: 0; color: var(--teal); font-size: 1.75rem; }
+    .card, .row, .next-card { background: white; border-radius: 20px; padding: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .card { max-width: 100%; }
     label { display: block; margin: 1rem 0 .35rem; font-weight: 600; }
-    input[type="text"], input[type="date"], select { width: 100%; padding: .7rem; border: 1px solid #9aa8bb; border-radius: 6px; font: inherit; }
-    button { min-height: 44px; border: 0; border-radius: 6px; padding: .65rem 1rem; background: #155eef; color: white; font: inherit; cursor: pointer; }
-    .error { min-height: 1.5em; color: #b42318; }
-    .rows { display: grid; gap: .75rem; }
-    .row { display: grid; grid-template-columns: 1fr auto; gap: .5rem 1rem; align-items: center; }
+    input[type="text"], input[type="date"], select { width: 100%; min-height: 48px; padding: .7rem; border: 1px solid #d8d1c7; border-radius: 12px; background: white; color: var(--text); font: inherit; }
+    button { min-height: 48px; border: 0; border-radius: 999px; padding: .7rem 1.2rem; background: var(--teal); color: white; font: inherit; font-weight: 600; cursor: pointer; }
+    button::after { content: " ›"; font-size: 1.2em; }
+    .error { min-height: 1.5em; color: var(--red); }
+    .rows { display: grid; gap: 10px; }
+    .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
     .row h2 { margin: 0; font-size: 1.1rem; }
-    .vaccines { margin: .25rem 0 0; color: #475467; }
-    .status { display: inline-block; margin-top: .5rem; border-radius: 99px; padding: .1rem .6rem; background: #eef2f6; font-size: .85rem; text-transform: capitalize; }
-    .status.done { background: #dcfae6; color: #067647; }
-    .status.overdue { background: #fee4e2; color: #b42318; }
-    .status.due { background: #fef0c7; color: #93370d; }
-    .status.upcoming { background: #eef2f6; color: #475467; }
+    .vaccines { margin: .25rem 0 0; color: var(--text); }
+    .status { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; border-radius: 999px; padding: .2rem .65rem; font-size: .82rem; font-weight: 600; }
+    .status.done { background: #e7f3e8; color: var(--green); }
+    .status.overdue { background: #f9e5e3; color: var(--red); }
+    .status.due { background: #fff1d2; color: var(--amber); }
+    .status.upcoming { background: #ededee; color: var(--grey); }
     .row-actions { display: flex; align-items: center; gap: .75rem; }
     .row-actions label { display: flex; align-items: center; gap: .35rem; margin: 0; white-space: nowrap; }
-    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+    .row-actions button { background: var(--orange); color: white; }
+    .next-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .next-card p { margin: .2rem 0 0; }
+    .next-headline { color: var(--teal); font-weight: 600; }
+    .next-headline.overdue { color: var(--red); }
+    .book-now { display: inline-flex; align-items: center; min-height: 44px; color: var(--teal); font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .booking-form select { margin-bottom: .3rem; }
+    .booking-form .chip-select { width: auto; min-width: 8rem; border: 0; border-radius: 999px; background: var(--cream); color: var(--text); }
+    .booking-form .chip-select:valid { background: var(--teal); color: white; }
+    .booking-form option { background: white; color: var(--text); }
+    .booking-form .chip-select option:checked { background: var(--teal); color: white; }
+    .confirmation { text-align: center; }
+    .confirmation-mark { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 1rem; border-radius: 50%; background: var(--teal); color: white; font-size: 2.5rem; }
+    .confirmation h1 { margin-bottom: 1rem; }
+    @media (max-width: 520px) { .row { grid-template-columns: 1fr; } .next-card { align-items: flex-start; } }
   </style>
 </head>
 <body>
   <main>
-    <header><h1>NextDose</h1><p>Your child's road to health, booked.</p></header>
+    <header>
+      <div class="brand"><img src="logo.png" alt="Ndlela road-and-heart logo"><h1>Ndlela</h1></div>
+      <p>Your child's road to health, <span>booked.</span></p>
+    </header>
     <section id="app"></section>
   </main>
   <script>
@@ -119,10 +160,15 @@
         .sort((a, b) => a.due - b.due)[0]?.index;
       app.innerHTML = `<h1>${saved.name ? `${saved.name}'s schedule` : 'Immunisation schedule'}</h1>
         <p>Date of birth: ${formatDate(birth)}</p>
+        ${bookIndex === undefined ? '' : `<article class="next-card">
+          <div><strong class="next-headline ${entries[bookIndex].status === 'overdue' ? 'overdue' : ''}">${entries[bookIndex].status === 'overdue' ? 'Overdue' : `Next vaccination in ${Math.round((entries[bookIndex].due - today) / 86400000)} days`}</strong>
+            <p>${entries[bookIndex].item.label}</p></div>
+          <a class="book-now" href="#booking" data-book="${bookIndex}">Book now ›</a>
+        </article>`}
         <div class="rows">${entries.map(({ item, index, due, status, done, booking }) => `
           <article class="row">
             <div><h2>${item.label}</h2><p class="vaccines">${item.vaccines.join(', ')}</p>
-              <span class="status ${status}">${status}</span> <span>Due ${formatDate(due)}</span></div>
+              <span class="status ${status}">${status === 'done' ? '✓ Done' : status === 'due' ? '⏰ Due soon' : status === 'overdue' ? '! Overdue' : '📅 Upcoming'}</span> <span>Due ${formatDate(due)}</span></div>
             <div class="row-actions"><label><input type="checkbox" data-index="${index}" ${done ? 'checked' : ''}> Done</label>
               ${booking ? `Booked: ${formatDate(parseDate(booking.date))}, ${booking.time}` : index === bookIndex ? `<button type="button" data-book="${index}">Book</button>` : ''}</div>
           </article>`).join('')}</div>
@@ -147,13 +193,13 @@
       }
       app.innerHTML = `<h1>Book ${visit.label}</h1>
         <p>${visit.vaccines.join(', ')}</p>
-        <form class="card" id="booking">
+        <form class="card booking-form" id="booking">
           <label for="clinic">Demo clinics</label>
           <select id="clinic" required><option value="">Choose a clinic</option>${CLINICS.map(clinic => `<option value="${clinic.name}">${clinic.name} (${clinic.area})</option>`).join('')}</select>
           <label for="date">Date</label>
-          <select id="date" required><option value="">Choose a weekday</option>${weekdays.map(day => `<option value="${todayISOFor(day)}">${formatDate(day)}</option>`).join('')}</select>
+          <select id="date" class="chip-select" required><option value="">Choose a weekday</option>${weekdays.map(day => `<option value="${todayISOFor(day)}">${formatDate(day)}</option>`).join('')}</select>
           <label for="time">Time</label>
-          <select id="time" required><option value="">Choose a time</option>${TIMES.map(time => `<option>${time}</option>`).join('')}</select>
+          <select id="time" class="chip-select" required><option value="">Choose a time</option>${TIMES.map(time => `<option>${time}</option>`).join('')}</select>
           <p class="error" role="alert"></p>
           <button type="submit">Confirm</button>
         </form>`;
@@ -177,8 +223,9 @@
 
     function showConfirmation(booking) {
       const visit = SCHEDULE.find(item => item.label === booking.label);
-      app.innerHTML = `<h1>Booking confirmed</h1>
-        <section class="card"><p><strong>${saved.name || 'Child'}</strong></p>
+      app.innerHTML = `<section class="card confirmation">
+        <div class="confirmation-mark" aria-hidden="true">✓</div>
+        <h1>You're booked</h1><p><strong>${saved.name || 'Child'}</strong></p>
           <p>${visit.vaccines.join(', ')}</p><p>${booking.clinic}</p>
           <p>${formatDate(parseDate(booking.date))} at ${booking.time}</p>
           <p>Reference: <strong>${booking.ref}</strong></p>
